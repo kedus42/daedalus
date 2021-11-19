@@ -1,0 +1,1 @@
+rostopic pub /daedalus_leg_l_even_controller/command std_msgs/Float64MultiArray '{data:[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}'

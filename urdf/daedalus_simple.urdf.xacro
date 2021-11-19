@@ -1,0 +1,499 @@
+<?xml version="1.0"?>
+<robot name="daedalus" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <self_collide>false</self_collide>
+  <!--Define some parameters -->
+  <material name="white">
+     <color rgba="1 1 1 0.2"/>
+  </material>
+  <material name="blue">
+     <color rgba="0 0 0.8 0.1"/>
+  </material>
+  <material name="black">
+     <color rgba="0 0 0 1"/>
+  </material>
+  <xacro:macro name="default_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </xacro:macro>
+
+
+  <!--The sphere -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.24" length="0.8"/>
+      </geometry>
+      <origin rpy="${pi/2.0} 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.464"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <xacro:property name="sphereweight" value="3.0" />
+  <xacro:property name="sphereradius" value="0.464" />
+  <link name="sphere">
+    <visual>
+      <geometry>
+        <sphere radius="0.464"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.464"/>
+      </geometry>
+    </collision>
+    <inertial>
+       <mass value="${sphereweight}"/>
+       <inertia ixx="${2.0/3.0*sphereweight*sphereradius*sphereradius}" ixy="0.0" ixz="0.0" iyy="${2.0/3.0*sphereweight*sphereradius*sphereradius}" iyz="0.0" izz="${2.0/3.0*sphereweight*sphereradius*sphereradius}"/>
+    </inertial>
+  </link>
+  <gazebo reference="sphere">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  <link name="filler_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.24" length="0.8"/>
+      </geometry>
+      <origin rpy="${pi/2.0} 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+       <mass value="1"/>
+       <inertia ixx="1" ixy="0.0" ixz="0" iyy="1" iyz="0.0" izz=".432"/>
+    </inertial>
+  </link>
+
+  <joint name="temp_cyl" type="continuous">
+     <parent link="filler_link"/>
+     <child link="sphere"/>
+     <axis xyz="0 1 0" rpy="0 0 0"/>
+     <origin xyz="0 0 0"/>
+     <limit effort="1000.0" velocity="5.0"/>
+     <joint_properties damping="1000.0" friction="1000.0"/>
+     <dynamics damping="100.0" friction="200.0"/>
+  </joint>
+
+  <!--joint name="temp_cyl_2" type="continuous">
+     <parent link="filler_link"/>
+     <child link="inner_outer_connector_left"/>
+     <axis xyz="0 1 0" rpy="0 0 0"/>
+     <origin xyz="0 -0.4 0"/>
+     <limit effort="1000.0" velocity="2.0"/>
+     <joint_properties damping="1000.0" friction="1000.0"/>
+     <dynamics damping="100.0" friction="200.0"/>
+  </joint-->
+
+  <joint name="filler" type="fixed">
+     <parent link="base_link"/>
+     <child link="filler_link"/>
+     <origin xyz="0 0 0"/>
+  </joint>
+
+  <transmission name="temp_cyl">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$temp_cyl">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="temp_cyl">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <!--transmission name="temp_cyl_2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$temp_cyl_2">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="temp_cyl_2">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission-->
+
+  <!--joint name="connector_to_sphere_left" type="fixed">
+     <parent link="inner_outer_connector_left"/>
+     <child link="sphere"/>
+     <origin xyz="0 0.4 0"/>
+  </joint-->
+
+  <!--joint name="connector_to_sphere_right" type="fixed">
+     <parent link="inner_outer_connector_right"/>
+     <child link="sphere"/>
+     <origin xyz="0 -0.4 0"/>
+  </joint-->
+
+  <!--link name="hip_base">
+    <visual>
+      <geometry>
+        <cylinder radius="0.24" length="0.8"/>
+      </geometry>
+      <origin rpy="${pi/2.0} 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+       <mass value="1"/>
+       <inertia ixx="1" ixy="0.0" ixz="0" iyy="1" iyz="0.0" izz=".432"/>
+    </inertial>
+  </link-->
+
+  <!--joint name="center_to_base" type="continuous">
+     <parent link="filler_link"/>
+     <child link="sphere"/>
+     <axis xyz="0 1 0" rpy="0 0 0"/>
+     <limit effort="1000.0" velocity="2.0"/>
+     <joint_properties damping="1000.0" friction="1000.0"/>
+     <dynamics damping="100.0" friction="200.0"/>
+  </joint-->
+
+  <!--transmission name="center_to_base">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$center_to_base">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="center_to_base">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission-->
+
+  <!--The battery -->
+  
+  <!--link name="battery_holder_1">
+    <visual>
+      <geometry>
+        <sphere radius="0.04"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.04"/>
+      </geometry>
+    </collision>
+    <inertial>
+       <mass value="${5.0}"/>
+       <inertia ixx="${2.0/3.0*5.0*0.04*0.04}" ixy="0.0" ixz="0.0" iyy="${2.0/3.0*5.0*0.04*0.04}" iyz="0.0" izz="${2.0/3.0*5.0*0.04*0.04}"/>
+    </inertial>
+  </link-->
+  
+  <link name="battery_holder">
+    <visual>
+      <geometry>
+        <cylinder radius="0.01" length="0.3"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.15"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.01" length="0.3"/>
+      </geometry>
+    </collision>
+    <xacro:default_inertial mass="1"/>
+  </link>
+  
+  <xacro:property name="batteryweight" value="7.0" />
+  <xacro:property name="batterysize" value="0.2" />
+  <link name="battery">
+    <visual>
+      <geometry>
+        <box size="${batterysize} ${batterysize} ${0.5*batterysize}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+       <mass value="${batteryweight}"/>
+       <inertia ixx="${2.0/12.0*batteryweight*(batterysize*batterysize)}" ixy="0.0" ixz="0.0" iyy="${2.0/12.0*batteryweight*(batterysize*batterysize)}" iyz="0.0" izz="${1.25/12.0*batteryweight*(batterysize*batterysize)}"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <box size="${batterysize} ${batterysize} ${0.5*batterysize}"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="battery_joint" type="fixed">
+     <parent link="battery_holder"/>
+     <child link="battery"/>
+     <origin xyz="0 0 -0.3"/>
+  </joint>
+
+  <!--joint name="battery_pitch" type="continuous">
+     <axis xyz="0 1 0" rpy="0 0 0"/>
+     <parent link="sphere"/>
+     <child link="battery_holder_1"/>
+     <origin xyz="0 0 0" rpy="0 0 0"/>
+     <limit effort="1000.0" velocity="10.0"/>
+     <joint_properties damping="1000.0" friction="1000.0"/>
+     <dynamics damping="100.0" friction="200.0" />
+  </joint-->
+  
+  <joint name="battery_yaw" type="revolute">
+     <parent link="filler_link"/>
+     <axis xyz="1 0 0"/>
+     <child link="battery_holder"/>
+     <limit effort="1000.0" lower="${-pi/4.0}" upper="${pi/4.0}" velocity="0.5"/>
+     <origin xyz="0 0 0"/>
+    <joint_properties damping="1000.0" friction="1000.0"/>
+    <dynamics damping="100.0" friction="200.0" />
+  </joint>
+  
+  <!--transmission name="battery_holder_1_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$battery_holder_1__motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="battery_pitch">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission-->
+  
+  <transmission name="battery_holder_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$battery_holder__motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="battery_yaw">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <!--link name="inner_outer_connector_right">
+    <visual>
+        <geometry>
+          <cylinder length="0.1" radius="0.1"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.1" radius="0.1"/>
+        </geometry>
+      </collision>
+      <inertial>
+       <mass value="1"/>
+       <inertia ixx="1/12*0.1*0.1" ixy="0.0" ixz="0.0" iyy="1/12*0.1*0.1" iyz="0.0" izz="0.0"/> 
+      </inertial>
+    </link-->
+
+    <!--link name="inner_outer_connector_left">
+    <visual>
+        <geometry>
+          <cylinder length="0.1" radius="0.1"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.05" radius="0.05"/>
+        </geometry>
+      </collision>
+      <inertial>
+       <mass value="1"/>
+       <inertia ixx="1/12*0.1*0.1" ixy="0.0" ixz="0.0" iyy="1/12*0.1*0.1" iyz="0.0" izz="0.0"/> 
+      </inertial>
+    </link-->
+  
+  <!--The rods -->
+
+  <xacro:property name="leglen" value="0.14" />
+  <xacro:property name="legradius" value="0.02" />
+  <xacro:property name="vel" value="0.1" />
+  <xacro:property name="weight" value="0.3" />
+
+  <xacro:macro name="leg" params="prefix index offset side">
+    <link name="hip_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius}"/>
+        </geometry>
+      </collision>
+      <inertial>
+         <mass value="${weight}"/>
+         <inertia ixx="${1/12*weight*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="${1/12*weight*leglen*leglen}"/> 
+         </inertial>
+    </link>
+    <link name="outer_leg_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.8}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.8}"/>
+        </geometry>
+      </collision>
+      <inertial>
+         <mass value="${0.8*weight}"/>
+         <inertia ixx="${1/12*0.8*weight*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="${1/12*0.8*weight*leglen*leglen}"/> 
+         </inertial>
+    </link>
+    <link name="center_leg_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.6}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.6}"/>
+        </geometry>
+      </collision>
+      <inertial>
+         <mass value="${weight*0.6}"/>
+         <inertia ixx="${1/12*weight*0.6*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="${1/12*weight*0.6*leglen*leglen}" iyz="0.0" izz="0.0"/> 
+         </inertial>
+    </link>
+    <link name="inner_leg_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.4}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.4}"/>
+        </geometry>
+      </collision>
+      <inertial>
+       <mass value="${weight*0.4}"/>
+       <inertia ixx="${1/12*weight*0.4*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="${1/12*weight*0.4*leglen*leglen}" iyz="0.0" izz="0.0"/> 
+       </inertial>
+    </link>
+
+    <joint name="base_to_hip_${prefix}" type="fixed">
+       <parent link="filler_link"/>
+       <child link="hip_${prefix}"/>
+       <origin rpy="0 ${index*(pi/4.0)} 0" xyz="${0.14*sin(index*(pi/4.0))} ${offset} ${0.14*cos(index*(pi/4.0))}"/>
+    </joint>
+    
+    <!--
+    <joint name="outer_to_center_leg_${prefix}" type="fixed">
+       <parent link="outer_leg_${prefix}"/>
+       <child link="center_leg_${prefix}"/>
+       <origin xyz="0 0 0.02"/>
+    </joint>
+    <joint name="center_to_inner_leg_${prefix}" type="fixed">
+       <parent link="center_leg_${prefix}"/>
+       <child link="inner_leg_${prefix}"/>
+       <origin xyz="0 0 0.02"/>
+    </joint>
+    -->
+    <joint name="hip_to_outer_leg_${prefix}" type="prismatic">
+       <axis xyz="0 0 1"/>
+       <parent link="hip_${prefix}"/>
+       <child link="outer_leg_${prefix}"/>
+       <limit effort="3000.0" lower="0.0" upper="${leglen}" velocity="${vel}"/>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <dynamics damping="100.0" friction="200.0"/>
+    </joint>
+    
+    <joint name="outer_to_center_leg_${prefix}" type="prismatic">
+       <axis xyz="0 0 1"/>
+       <parent link="outer_leg_${prefix}"/>
+       <child link="center_leg_${prefix}"/>
+       <limit effort="3000.0" lower="0.0" upper="${leglen}" velocity="${vel}"/>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <dynamics damping="100.0" friction="200.0" />
+    </joint>
+    
+    <joint name="center_to_inner_leg_${prefix}" type="prismatic">
+       <axis xyz="0 0 1"/>
+       <parent link="center_leg_${prefix}"/>
+       <child link="inner_leg_${prefix}"/>
+       <limit effort="3000.0" lower="0.0" upper="${leglen}" velocity="${vel}"/>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <dynamics damping="100.0" friction="200.0" />
+    </joint>
+    <!--transmission name="base_to_hip_${prefix}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="$base_to_hip_${prefix}">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="base_to_hip_${prefix}">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+    </transmission-->
+    <transmission name="outer_leg_extension_${prefix}_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="outer_leg_extension_${prefix}_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="hip_to_outer_leg_${prefix}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+    <transmission name="center_leg_extension_${prefix}_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="center_leg_extension_${prefix}_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="outer_to_center_leg_${prefix}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+    <transmission name="inner_leg_extension_${prefix}_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="inner_leg_extension_${prefix}_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="center_to_inner_leg_${prefix}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+  </xacro:macro>
+   
+  <xacro:leg prefix="right_0" index="0" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_2" index="2" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_4" index="4" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_6" index="6" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_1" index="1" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_3" index="3" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_5" index="5" offset="0.4" side="right"/>
+  <xacro:leg prefix="right_7" index="7" offset="0.4" side="right"/>
+  <!--
+  -->
+  <xacro:leg prefix="left_0" index="0" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_2" index="2" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_4" index="4" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_6" index="6" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_1" index="1" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_3" index="3" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_5" index="5" offset="-0.4" side="left"/>
+  <xacro:leg prefix="left_7" index="7" offset="-0.4" side="left"/>
+  <!--
+  -->
+
+  <gazebo>
+     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+       <robotNamespace>/</robotNamespace>
+     </plugin>
+  </gazebo>
+</robot>

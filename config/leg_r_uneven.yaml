@@ -1,0 +1,14 @@
+type: "position_controllers/JointGroupPositionController"
+joints:
+ - hip_to_outer_leg_right_1
+ - outer_to_center_leg_right_1
+ - center_to_inner_leg_right_1
+ - hip_to_outer_leg_right_3
+ - outer_to_center_leg_right_3
+ - center_to_inner_leg_right_3
+ - hip_to_outer_leg_right_5
+ - outer_to_center_leg_right_5
+ - center_to_inner_leg_right_5
+ - hip_to_outer_leg_right_7
+ - outer_to_center_leg_right_7
+ - center_to_inner_leg_right_7

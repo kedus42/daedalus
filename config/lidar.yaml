@@ -1,0 +1,6 @@
+type: "velocity_controllers/JointGroupVelocityController"
+joints: 
+  - anchor_joint_0
+  - anchor_joint_1
+  - anchor_joint_2
+  - anchor_joint_3

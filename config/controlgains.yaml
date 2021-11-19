@@ -1,0 +1,234 @@
+/gazebo_ros_control:   
+  pid_gains:
+    # anchor_joint_0:
+    #   p: 100.0
+    #   i: 0.01
+    #   d: 10.0
+    # anchor_joint_1:
+    #   p: 100.0
+    #   i: 0.01
+    #   d: 10.0
+    # anchor_joint_2:
+    #   p: 100.0
+    #   i: 0.01
+    #   d: 10.0
+    # anchor_joint_3:
+    #   p: 100.0
+    #   i: 0.01
+    #   d: 10.0
+    # temp_cyl_1:
+    #   p: 100.0
+    #   i: 0.01
+    #   d: 10.0
+    # temp_cyl_2:
+    #   p: 100.0
+    #   i: 0.01 
+    #   d: 10.0
+    battery_yaw:
+      p: 100.0
+      i: 0.01 
+      d: 10.0
+    temp_cyl:
+      p: 100.0
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_0:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_0:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_2:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_4:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_6:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_1:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_3:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_5:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_right_7:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_2:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_4:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_6:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_1:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_3:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_5:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_right_7:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_0:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_2:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_4:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_6:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_1:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_3:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_5:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    outer_to_center_leg_left_7:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_0:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_2:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_4:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_6:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_1:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_3:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_5:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    center_to_inner_leg_left_7:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_0:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_1:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_2:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_3:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_4:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_5:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_6:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_7:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_right_8:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_0:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_1:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_2:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_3:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_4:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_5:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_6:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_7:
+      p: 10000
+      i: 0.01 
+      d: 10.0
+    hip_to_outer_leg_left_8:
+      p: 10000
+      i: 0.01 
+      d: 10.0

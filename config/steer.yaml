@@ -1,0 +1,4 @@
+type: "position_controllers/JointPositionController"
+joint: battery_yaw 
+
+

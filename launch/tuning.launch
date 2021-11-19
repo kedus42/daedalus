@@ -1,0 +1,148 @@
+<launch>
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="model" default="$(find daedalus)/urdf/daedalus.urdf.xacro"/>
+  <arg name="lidar_rev_speed" default="3.14"/>
+  <arg name="world" default="empty_world"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find daedalus)/worlds/$(arg world).world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
+  <!--new params to set for controller: controller_on, target-->
+  <param name="controller_on" type="bool" value="false"/>
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x 0 -y 0 -Y 0 -z 0 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'empty_world')"/>
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x 12.74 -y 42.4 -Y 1.7 -z 6.8 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'inspection')"/>
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x 6 -y 6 -Y 1.57 -z 0 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'IndianTunnel')"/>
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x 0 -y 60 -Y 3.14 -z 1 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'cave_world')"/>
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x 0 -y 0 -Y 0 -z 1 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'ramp')"/>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+  <node name="basic_gui" pkg="daedalus" type="gui.py" output="screen"/>
+  <!-- <node name="course_controller" pkg="daedalus" type="course_controller" output="screen"/> -->
+  <node name="imu_euler" pkg="daedalus" type="imu_euler" output="screen"/>
+  <!--node name="roll_controller" pkg="daedalus" type="roll_controller" output="screen"/-->
+  <!--node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" output="screen"/-->
+  <node type="point_cloud2_assembler" pkg="laser_assembler" name="my_assembler">
+    <remap from="cloud" to="/daedalus/cloud/aggregate"/>
+    <param name="max_clouds" type="int" value="400" />
+    <param name="fixed_frame" type="string" value="base_link" />
+  </node>
+  <node pkg="rostopic" type="rostopic" name="rostopic" args="pub -r 1 /daedalus_lidar_controller/command std_msgs/Float64MultiArray '{data:[$(arg lidar_rev_speed), $(arg lidar_rev_speed), $(arg lidar_rev_speed), $(arg lidar_rev_speed)]}'"/>
+  <node name="drive_encoder" pkg="daedalus" type="drive_encoder" output="screen"/>
+  <!--node name="pitch_corrector" pkg="daedalus" type="pitch_corrector" output="screen"/-->
+  <node name="pcl_generator" pkg="daedalus" type="pcl_generator" output="screen"/>
+  <node name="encoder_based_position_estimator" pkg="daedalus" type="encoder_based_position_estimator" output="screen"/>
+  <node name="mapper" pkg="daedalus" type="mapper" output="screen"/>
+  <!--node name="ukf_localization_node" pkg="robot_localization" type="ukf_localization_node" output="screen">
+    
+    <param name="imu0" value="/daedalus/imu_0"/>
+    <param name="imu1" value="/daedalus/imu_1"/>
+    <param name="imu2" value="/daedalus/imu_2"/>
+
+    <param name="map_frame" value="map"/>            
+    <param name="odom_frame" value="odom"/>
+    <param name="base_link_frame" value="base_link"/>
+    <param name="world_frame" value="odom"/>
+
+    <rosparam param="imu0_config">[false,  false,  false,
+                        true,  true, true,
+                        false, false, false,
+                        true, true, true,
+                        true, true, true]
+    </rosparam>
+    <rosparam param="imu1_config">[false,  false,  false,
+                        true,  true, true,
+                        false, false, false,
+                        true, true, true,
+                        true, true, true]
+    </rosparam>
+    <rosparam param="imu2_config">[false,  false,  false,
+                        true,  true, true,
+                        false, false, false,
+                        true, true, true,
+                        true, true, true]
+    </rosparam>
+  </node-->
+ 
+  <arg name="rvizconfig" default="$(find daedalus)/rviz/tuning.rviz" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/joints.yaml"
+            ns="daedalus_joint_state_controller" />
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/controlgains.yaml"/>
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/drive.yaml"
+            ns="daedalus_battery_velocity_controller"/>
+  
+  <rosparam command="load"
+            file="$(find daedalus)/config/steer.yaml"
+            ns="daedalus_battery_steer_controller" />
+  
+  <!-- <rosparam command="load"
+            file="$(find daedalus)/config/leg_r_even.yaml"
+            ns="daedalus_leg_r_even_controller" />
+  
+  <rosparam command="load"
+            file="$(find daedalus)/config/leg_l_even.yaml"
+            ns="daedalus_leg_l_even_controller" />
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/leg_r_uneven.yaml"
+            ns="daedalus_leg_r_uneven_controller" />
+  
+  <rosparam command="load"
+            file="$(find daedalus)/config/leg_l_uneven.yaml"
+            ns="daedalus_leg_l_uneven_controller" /> -->
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/lidar.yaml"
+            ns="daedalus_lidar_controller" />
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/leg_left.yaml"
+            ns="daedalus_left_controller" />
+
+  <rosparam command="load"
+            file="$(find daedalus)/config/leg_right.yaml"
+            ns="daedalus_right_controller" />
+
+  <node name="daedalus_controller_spawner" pkg="controller_manager" type="spawner"
+    args="daedalus_joint_state_controller
+          daedalus_battery_velocity_controller
+          daedalus_battery_steer_controller
+          daedalus_lidar_controller
+          daedalus_left_controller
+          daedalus_right_controller"/>
+          <!-- daedalus_leg_r_even_controller
+          daedalus_leg_l_even_controller
+          daedalus_leg_r_uneven_controller
+          daedalus_leg_l_uneven_controller -->
+</launch>

@@ -1,0 +1,10 @@
+<launch>
+
+  <node type="point_cloud2_assembler" pkg="laser_assembler" name="my_assembler" output="screen">
+    <remap from="cloud" to="/daedalus/map"/>
+    <param name="max_clouds" type="int" value="16000" />
+    <param name="fixed_frame" type="string" value="base_link" />
+  </node>
+  <node type="concat_map" pkg="daedalus" name="concat_map" output="screen"/>
+
+</launch>

@@ -1,0 +1,263 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"baseplate" [label="baseplate"];
+"mid70_0" [label="mid70_0"];
+"anchor_0" [label="anchor_0"];
+"mid70_1" [label="mid70_1"];
+"anchor_1" [label="anchor_1"];
+"mid70_2" [label="mid70_2"];
+"anchor_2" [label="anchor_2"];
+"mid70_3" [label="mid70_3"];
+"anchor_3" [label="anchor_3"];
+"battery_holder" [label="battery_holder"];
+"battery" [label="battery"];
+"drive_encoder_l_0" [label="drive_encoder_l_0"];
+"drive_encoder_l_1" [label="drive_encoder_l_1"];
+"drive_encoder_r_0" [label="drive_encoder_r_0"];
+"drive_encoder_r_1" [label="drive_encoder_r_1"];
+"imu_link_0" [label="imu_link_0"];
+"imu_link_1" [label="imu_link_1"];
+"imu_link_2" [label="imu_link_2"];
+"filler_link" [label="filler_link"];
+"inner_outer_connector_right" [label="inner_outer_connector_right"];
+"hip_right_0" [label="hip_right_0"];
+"outer_leg_right_0" [label="outer_leg_right_0"];
+"center_leg_right_0" [label="center_leg_right_0"];
+"inner_leg_right_0" [label="inner_leg_right_0"];
+"hip_right_1" [label="hip_right_1"];
+"outer_leg_right_1" [label="outer_leg_right_1"];
+"center_leg_right_1" [label="center_leg_right_1"];
+"inner_leg_right_1" [label="inner_leg_right_1"];
+"hip_right_2" [label="hip_right_2"];
+"outer_leg_right_2" [label="outer_leg_right_2"];
+"center_leg_right_2" [label="center_leg_right_2"];
+"inner_leg_right_2" [label="inner_leg_right_2"];
+"hip_right_3" [label="hip_right_3"];
+"outer_leg_right_3" [label="outer_leg_right_3"];
+"center_leg_right_3" [label="center_leg_right_3"];
+"inner_leg_right_3" [label="inner_leg_right_3"];
+"hip_right_4" [label="hip_right_4"];
+"outer_leg_right_4" [label="outer_leg_right_4"];
+"center_leg_right_4" [label="center_leg_right_4"];
+"inner_leg_right_4" [label="inner_leg_right_4"];
+"hip_right_5" [label="hip_right_5"];
+"outer_leg_right_5" [label="outer_leg_right_5"];
+"center_leg_right_5" [label="center_leg_right_5"];
+"inner_leg_right_5" [label="inner_leg_right_5"];
+"hip_right_6" [label="hip_right_6"];
+"outer_leg_right_6" [label="outer_leg_right_6"];
+"center_leg_right_6" [label="center_leg_right_6"];
+"inner_leg_right_6" [label="inner_leg_right_6"];
+"hip_right_7" [label="hip_right_7"];
+"outer_leg_right_7" [label="outer_leg_right_7"];
+"center_leg_right_7" [label="center_leg_right_7"];
+"inner_leg_right_7" [label="inner_leg_right_7"];
+"inner_outer_connector_left" [label="inner_outer_connector_left"];
+"hip_left_0" [label="hip_left_0"];
+"outer_leg_left_0" [label="outer_leg_left_0"];
+"center_leg_left_0" [label="center_leg_left_0"];
+"inner_leg_left_0" [label="inner_leg_left_0"];
+"hip_left_1" [label="hip_left_1"];
+"outer_leg_left_1" [label="outer_leg_left_1"];
+"center_leg_left_1" [label="center_leg_left_1"];
+"inner_leg_left_1" [label="inner_leg_left_1"];
+"hip_left_2" [label="hip_left_2"];
+"outer_leg_left_2" [label="outer_leg_left_2"];
+"center_leg_left_2" [label="center_leg_left_2"];
+"inner_leg_left_2" [label="inner_leg_left_2"];
+"hip_left_3" [label="hip_left_3"];
+"outer_leg_left_3" [label="outer_leg_left_3"];
+"center_leg_left_3" [label="center_leg_left_3"];
+"inner_leg_left_3" [label="inner_leg_left_3"];
+"hip_left_4" [label="hip_left_4"];
+"outer_leg_left_4" [label="outer_leg_left_4"];
+"center_leg_left_4" [label="center_leg_left_4"];
+"inner_leg_left_4" [label="inner_leg_left_4"];
+"hip_left_5" [label="hip_left_5"];
+"outer_leg_left_5" [label="outer_leg_left_5"];
+"center_leg_left_5" [label="center_leg_left_5"];
+"inner_leg_left_5" [label="inner_leg_left_5"];
+"hip_left_6" [label="hip_left_6"];
+"outer_leg_left_6" [label="outer_leg_left_6"];
+"center_leg_left_6" [label="center_leg_left_6"];
+"inner_leg_left_6" [label="inner_leg_left_6"];
+"hip_left_7" [label="hip_left_7"];
+"outer_leg_left_7" [label="outer_leg_left_7"];
+"center_leg_left_7" [label="center_leg_left_7"];
+"inner_leg_left_7" [label="inner_leg_left_7"];
+"sphere" [label="sphere"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "base_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_joint" -> "baseplate"
+"baseplate" -> "baseplate_to_mid70_0" [label="xyz: 0.1 -0.1 0.095 \nrpy: 0 0 -0.436332"]
+"baseplate_to_mid70_0" -> "mid70_0"
+"mid70_0" -> "anchor_joint_0" [label="xyz: -0.0175 0 0 \nrpy: 0 -0 0"]
+"anchor_joint_0" -> "anchor_0"
+"baseplate" -> "baseplate_to_mid70_1" [label="xyz: 0.1 0.1 0.095 \nrpy: 0 -0 0.436332"]
+"baseplate_to_mid70_1" -> "mid70_1"
+"mid70_1" -> "anchor_joint_1" [label="xyz: -0.0175 0 0 \nrpy: 0 -0 0"]
+"anchor_joint_1" -> "anchor_1"
+"baseplate" -> "baseplate_to_mid70_2" [label="xyz: -0.1 0.1 0.095 \nrpy: 0 -0 2.70526"]
+"baseplate_to_mid70_2" -> "mid70_2"
+"mid70_2" -> "anchor_joint_2" [label="xyz: -0.0175 0 0 \nrpy: 0 -0 0"]
+"anchor_joint_2" -> "anchor_2"
+"baseplate" -> "baseplate_to_mid70_3" [label="xyz: -0.1 -0.1 0.095 \nrpy: 0 -0 -2.70526"]
+"baseplate_to_mid70_3" -> "mid70_3"
+"mid70_3" -> "anchor_joint_3" [label="xyz: -0.0175 0 0 \nrpy: 0 -0 0"]
+"anchor_joint_3" -> "anchor_3"
+"baseplate" -> "battery_yaw" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"battery_yaw" -> "battery_holder"
+"battery_holder" -> "battery_joint" [label="xyz: 0 0 -0.175 \nrpy: 0 -0 0"]
+"battery_joint" -> "battery"
+"baseplate" -> "encoder_joint_l_0" [label="xyz: -0.2 0.05 -0.05 \nrpy: 0 0 -1.5708"]
+"encoder_joint_l_0" -> "drive_encoder_l_0"
+"baseplate" -> "encoder_joint_l_1" [label="xyz: -0.2 -0.05 -0.05 \nrpy: 0 0 -1.5708"]
+"encoder_joint_l_1" -> "drive_encoder_l_1"
+"baseplate" -> "encoder_joint_r_0" [label="xyz: 0.2 0.05 -0.05 \nrpy: 0 -0 1.5708"]
+"encoder_joint_r_0" -> "drive_encoder_r_0"
+"baseplate" -> "encoder_joint_r_1" [label="xyz: 0.2 -0.05 -0.05 \nrpy: 0 -0 1.5708"]
+"encoder_joint_r_1" -> "drive_encoder_r_1"
+"baseplate" -> "imu_joint_0" [label="xyz: 0 0 0.05 \nrpy: 0 -0 0"]
+"imu_joint_0" -> "imu_link_0"
+"baseplate" -> "imu_joint_1" [label="xyz: 0 0 0.05 \nrpy: 0 -0 1.5708"]
+"imu_joint_1" -> "imu_link_1"
+"baseplate" -> "imu_joint_2" [label="xyz: 0 0 0.05 \nrpy: 0 1.5708 -0"]
+"imu_joint_2" -> "imu_link_2"
+"base_link" -> "filler" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"filler" -> "filler_link"
+"filler_link" -> "temp_cyl_1" [label="xyz: 0 0.2 0 \nrpy: 0 -0 0"]
+"temp_cyl_1" -> "inner_outer_connector_right"
+"inner_outer_connector_right" -> "base_to_hip_right_0" [label="xyz: 0 0 0.07 \nrpy: 0 -0 0"]
+"base_to_hip_right_0" -> "hip_right_0"
+"hip_right_0" -> "hip_to_outer_leg_right_0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_0" -> "outer_leg_right_0"
+"outer_leg_right_0" -> "outer_to_center_leg_right_0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_0" -> "center_leg_right_0"
+"center_leg_right_0" -> "center_to_inner_leg_right_0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_0" -> "inner_leg_right_0"
+"inner_outer_connector_right" -> "base_to_hip_right_1" [label="xyz: 0.0494975 0 0.0494975 \nrpy: 0 0.785398 0"]
+"base_to_hip_right_1" -> "hip_right_1"
+"hip_right_1" -> "hip_to_outer_leg_right_1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_1" -> "outer_leg_right_1"
+"outer_leg_right_1" -> "outer_to_center_leg_right_1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_1" -> "center_leg_right_1"
+"center_leg_right_1" -> "center_to_inner_leg_right_1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_1" -> "inner_leg_right_1"
+"inner_outer_connector_right" -> "base_to_hip_right_2" [label="xyz: 0.07 0 4.28626e-18 \nrpy: 0 1.5708 -0"]
+"base_to_hip_right_2" -> "hip_right_2"
+"hip_right_2" -> "hip_to_outer_leg_right_2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_2" -> "outer_leg_right_2"
+"outer_leg_right_2" -> "outer_to_center_leg_right_2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_2" -> "center_leg_right_2"
+"center_leg_right_2" -> "center_to_inner_leg_right_2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_2" -> "inner_leg_right_2"
+"inner_outer_connector_right" -> "base_to_hip_right_3" [label="xyz: 0.0494975 0 -0.0494975 \nrpy: 3.14159 0.785398 3.14159"]
+"base_to_hip_right_3" -> "hip_right_3"
+"hip_right_3" -> "hip_to_outer_leg_right_3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_3" -> "outer_leg_right_3"
+"outer_leg_right_3" -> "outer_to_center_leg_right_3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_3" -> "center_leg_right_3"
+"center_leg_right_3" -> "center_to_inner_leg_right_3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_3" -> "inner_leg_right_3"
+"inner_outer_connector_right" -> "base_to_hip_right_4" [label="xyz: 8.57253e-18 0 -0.07 \nrpy: 3.14159 1.22465e-16 3.14159"]
+"base_to_hip_right_4" -> "hip_right_4"
+"hip_right_4" -> "hip_to_outer_leg_right_4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_4" -> "outer_leg_right_4"
+"outer_leg_right_4" -> "outer_to_center_leg_right_4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_4" -> "center_leg_right_4"
+"center_leg_right_4" -> "center_to_inner_leg_right_4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_4" -> "inner_leg_right_4"
+"inner_outer_connector_right" -> "base_to_hip_right_5" [label="xyz: -0.0494975 0 -0.0494975 \nrpy: 3.14159 -0.785398 3.14159"]
+"base_to_hip_right_5" -> "hip_right_5"
+"hip_right_5" -> "hip_to_outer_leg_right_5" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_5" -> "outer_leg_right_5"
+"outer_leg_right_5" -> "outer_to_center_leg_right_5" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_5" -> "center_leg_right_5"
+"center_leg_right_5" -> "center_to_inner_leg_right_5" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_5" -> "inner_leg_right_5"
+"inner_outer_connector_right" -> "base_to_hip_right_6" [label="xyz: -0.07 0 -1.28588e-17 \nrpy: 0 -1.5708 -6.28319"]
+"base_to_hip_right_6" -> "hip_right_6"
+"hip_right_6" -> "hip_to_outer_leg_right_6" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_6" -> "outer_leg_right_6"
+"outer_leg_right_6" -> "outer_to_center_leg_right_6" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_6" -> "center_leg_right_6"
+"center_leg_right_6" -> "center_to_inner_leg_right_6" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_6" -> "inner_leg_right_6"
+"inner_outer_connector_right" -> "base_to_hip_right_7" [label="xyz: -0.0494975 0 0.0494975 \nrpy: 0 -0.785398 0"]
+"base_to_hip_right_7" -> "hip_right_7"
+"hip_right_7" -> "hip_to_outer_leg_right_7" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_right_7" -> "outer_leg_right_7"
+"outer_leg_right_7" -> "outer_to_center_leg_right_7" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_right_7" -> "center_leg_right_7"
+"center_leg_right_7" -> "center_to_inner_leg_right_7" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_right_7" -> "inner_leg_right_7"
+"filler_link" -> "temp_cyl_2" [label="xyz: 0 -0.2 0 \nrpy: 0 -0 0"]
+"temp_cyl_2" -> "inner_outer_connector_left"
+"inner_outer_connector_left" -> "base_to_hip_left_0" [label="xyz: 0 0 0.07 \nrpy: 0 -0 0"]
+"base_to_hip_left_0" -> "hip_left_0"
+"hip_left_0" -> "hip_to_outer_leg_left_0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_0" -> "outer_leg_left_0"
+"outer_leg_left_0" -> "outer_to_center_leg_left_0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_0" -> "center_leg_left_0"
+"center_leg_left_0" -> "center_to_inner_leg_left_0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_0" -> "inner_leg_left_0"
+"inner_outer_connector_left" -> "base_to_hip_left_1" [label="xyz: 0.0494975 0 0.0494975 \nrpy: 0 0.785398 0"]
+"base_to_hip_left_1" -> "hip_left_1"
+"hip_left_1" -> "hip_to_outer_leg_left_1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_1" -> "outer_leg_left_1"
+"outer_leg_left_1" -> "outer_to_center_leg_left_1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_1" -> "center_leg_left_1"
+"center_leg_left_1" -> "center_to_inner_leg_left_1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_1" -> "inner_leg_left_1"
+"inner_outer_connector_left" -> "base_to_hip_left_2" [label="xyz: 0.07 0 4.28626e-18 \nrpy: 0 1.5708 -0"]
+"base_to_hip_left_2" -> "hip_left_2"
+"hip_left_2" -> "hip_to_outer_leg_left_2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_2" -> "outer_leg_left_2"
+"outer_leg_left_2" -> "outer_to_center_leg_left_2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_2" -> "center_leg_left_2"
+"center_leg_left_2" -> "center_to_inner_leg_left_2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_2" -> "inner_leg_left_2"
+"inner_outer_connector_left" -> "base_to_hip_left_3" [label="xyz: 0.0494975 0 -0.0494975 \nrpy: 3.14159 0.785398 3.14159"]
+"base_to_hip_left_3" -> "hip_left_3"
+"hip_left_3" -> "hip_to_outer_leg_left_3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_3" -> "outer_leg_left_3"
+"outer_leg_left_3" -> "outer_to_center_leg_left_3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_3" -> "center_leg_left_3"
+"center_leg_left_3" -> "center_to_inner_leg_left_3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_3" -> "inner_leg_left_3"
+"inner_outer_connector_left" -> "base_to_hip_left_4" [label="xyz: 8.57253e-18 0 -0.07 \nrpy: 3.14159 1.22465e-16 3.14159"]
+"base_to_hip_left_4" -> "hip_left_4"
+"hip_left_4" -> "hip_to_outer_leg_left_4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_4" -> "outer_leg_left_4"
+"outer_leg_left_4" -> "outer_to_center_leg_left_4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_4" -> "center_leg_left_4"
+"center_leg_left_4" -> "center_to_inner_leg_left_4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_4" -> "inner_leg_left_4"
+"inner_outer_connector_left" -> "base_to_hip_left_5" [label="xyz: -0.0494975 0 -0.0494975 \nrpy: 3.14159 -0.785398 3.14159"]
+"base_to_hip_left_5" -> "hip_left_5"
+"hip_left_5" -> "hip_to_outer_leg_left_5" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_5" -> "outer_leg_left_5"
+"outer_leg_left_5" -> "outer_to_center_leg_left_5" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_5" -> "center_leg_left_5"
+"center_leg_left_5" -> "center_to_inner_leg_left_5" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_5" -> "inner_leg_left_5"
+"inner_outer_connector_left" -> "base_to_hip_left_6" [label="xyz: -0.07 0 -1.28588e-17 \nrpy: 0 -1.5708 -6.28319"]
+"base_to_hip_left_6" -> "hip_left_6"
+"hip_left_6" -> "hip_to_outer_leg_left_6" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_6" -> "outer_leg_left_6"
+"outer_leg_left_6" -> "outer_to_center_leg_left_6" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_6" -> "center_leg_left_6"
+"center_leg_left_6" -> "center_to_inner_leg_left_6" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_6" -> "inner_leg_left_6"
+"inner_outer_connector_left" -> "base_to_hip_left_7" [label="xyz: -0.0494975 0 0.0494975 \nrpy: 0 -0.785398 0"]
+"base_to_hip_left_7" -> "hip_left_7"
+"hip_left_7" -> "hip_to_outer_leg_left_7" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"hip_to_outer_leg_left_7" -> "outer_leg_left_7"
+"outer_leg_left_7" -> "outer_to_center_leg_left_7" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"outer_to_center_leg_left_7" -> "center_leg_left_7"
+"center_leg_left_7" -> "center_to_inner_leg_left_7" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"center_to_inner_leg_left_7" -> "inner_leg_left_7"
+"inner_outer_connector_left" -> "connector_to_sphere_left" [label="xyz: 0 0.2 0 \nrpy: 0 -0 0"]
+"connector_to_sphere_left" -> "sphere"
+}

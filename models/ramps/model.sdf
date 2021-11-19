@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="steep_ramp">
+    <static>true</static>
+    <link name="steep_ramp">
+      <pose>0 0 0.5 0 0 1.57</pose>
+      <collision name="steep_ramp">
+        <geometry>
+          <mesh>
+            <scale>0.5 0.5 0.5</scale> 
+            <uri>model://ramps/ramp.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="steep_ramp">
+        <geometry>
+          <mesh>
+            <scale>0.5 0.5 0.5</scale> 
+            <uri>model://ramps/ramp.dae</uri>
+          </mesh>
+        </geometry>
+        <cast_shadows>false</cast_shadows>
+        <material>
+          <ambient>0.5 0.3 0.3 1</ambient>
+          <diffuse>0.7 0.5 0.5 1</diffuse>
+          <specular>0.7 0.5 0.5 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
