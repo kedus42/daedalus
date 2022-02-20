@@ -1,0 +1,770 @@
+<?xml version="1.0"?>
+<robot name="daedalus" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <self_collide>false</self_collide>
+  <!--Define some parameters -->
+  <material name="white">
+     <color rgba="1 1 1 0.2"/>
+  </material>
+  <material name="blue">
+     <color rgba="0 0 0.8 0.1"/>
+  </material>
+  <material name="black">
+     <color rgba="0 0 0 1"/>
+  </material>
+  <xacro:macro name="default_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </xacro:macro>
+
+
+  <!--The sphere -->
+  <link name="base_link"/>
+  
+  <xacro:property name="sphereweight" value="3" />
+  <xacro:property name="sphereradius" value="0.232" />
+  <link name="sphere">
+     <visual>
+      <geometry>
+        <sphere radius="0.232"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.232"/>
+      </geometry>
+    </collision>
+    <inertial>
+       <mass value="${sphereweight}"/>
+       <inertia ixx="${2.0/3.0*sphereweight*sphereradius*sphereradius}" ixy="0.0" ixz="0.0" iyy="${2.0/3.0*sphereweight*sphereradius*sphereradius}" iyz="0.0" izz="${2.0/3.0*sphereweight*sphereradius*sphereradius}"/>
+    </inertial>
+  </link>
+  <gazebo reference="sphere">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <material>Gazebo/GreyTransparent</material>
+  </gazebo> 
+  
+  <link name="filler_link">
+    <visual>
+      <geometry>
+        <box size=".2 .38 .1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+       <mass value="1"/>
+       <inertia ixx="0.0145" ixy="0.0" ixz="0.0" iyy="0.0181" iyz="0.0" izz="0.006"/>
+    </inertial>
+  </link>
+  <gazebo reference="filler_link">
+    <material>Gazebo/Black</material>
+  </gazebo> 
+
+  <link name="baseplate">
+    <visual>
+      <geometry>
+        <box size=".2 .38 .1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+       <mass value="30"/>
+       <inertia ixx="0.436" ixy="0.0" ixz="0" iyy="0.544" iyz="0.0" izz="0.18"/>
+    </inertial>
+  </link>
+  <gazebo reference="baseplate">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="connector_to_sphere_left" type="fixed">
+     <parent link="inner_outer_connector_left"/>
+     <child link="sphere"/>
+     <origin xyz="0 0.2 0"/>
+  </joint>
+
+  <joint name="connector_to_sphere_right" type="fixed">
+     <parent link="sphere"/>
+     <child link="inner_outer_connector_right"/>
+     <origin xyz="0 0.2 0"/>
+  </joint>
+
+  <!--link name="star_fixer_link"/>
+
+  <joint name="star_fixer_joint" type="fixed">
+     <parent link="star_fixer_link"/>
+     <child link="sphere"/>
+     <origin xyz="0 0 0"/>
+  </joint-->
+
+  <!--joint name="temp_cyl_1" type="continuous">
+     <parent link="filler_link"/>
+     <child link="inner_outer_connector_right"/>
+     <axis xyz="0 1 0" rpy="0 0 0"/>
+     <origin xyz="0 0.2 0"/>
+     <limit effort="0.1" velocity="0.1"/>
+     <joint_properties damping="1.0" friction="1.0"/>
+     <dynamics damping="1.0" friction="2.0"/>
+  </joint-->
+  <!--gazebo reference="temp_cyl_1">
+    <implicitSpringDamper>true</implicitSpringDamper>
+  </gazebo-->
+
+  <joint name="temp_cyl_2" type="continuous">
+     <parent link="filler_link"/>
+     <child link="inner_outer_connector_left"/>
+     <axis xyz="0 1 0" rpy="0 0 0"/>
+     <origin xyz="0 -0.2 0"/>
+     <limit effort="0.1" velocity="0.1"/>
+     <joint_properties damping="1.0" friction="1.0"/>
+     <dynamics damping="1.0" friction="2.0"/>
+  </joint>
+  <!--gazebo reference="temp_cyl_2">
+    <implicitSpringDamper>true</implicitSpringDamper>
+  </gazebo-->
+
+  <joint name="filler" type="fixed">
+     <parent link="base_link"/>
+     <child link="filler_link"/>
+     <origin xyz="0 0 0"/>
+  </joint>
+
+  <joint name="base_joint" type="fixed">
+     <parent link="base_link"/>
+     <child link="baseplate"/>
+     <origin xyz="0 0 0"/>
+  </joint>
+
+  <!--transmission name="temp_cyl_1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$temp_cyl_1">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="temp_cyl_1">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission-->
+
+  <transmission name="temp_cyl_2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$temp_cyl_2">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="temp_cyl_2">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <link name="inner_outer_connector_right">
+    <visual>
+      <geometry>
+        <cylinder length="0.025" radius="0.05"/>
+      </geometry>
+      <material name="black"/>
+      <origin xyz="0 0 0" rpy="1.57 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.025" radius="0.05"/>
+      <origin xyz="0 0 0" rpy="1.57 0 0"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/> 
+    </inertial>
+  </link>
+  <gazebo reference="inner_outer_connector_right">
+    <material>Gazebo/Black</material>
+  </gazebo> 
+
+  <link name="inner_outer_connector_left">
+  <visual>
+      <geometry>
+        <cylinder length="0.025" radius="0.05"/>
+      </geometry>
+      <material name="black"/>
+      <origin xyz="0 0 0" rpy="1.57 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.025" radius="0.05"/>
+        <origin xyz="0 0 0" rpy="1.57 0 0"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/> 
+    </inertial>
+  </link>
+  <gazebo reference="inner_outer_connector_left">
+    <material>Gazebo/Black</material>
+  </gazebo> 
+
+  
+  
+  <link name="battery_holder">
+    <visual>
+      <geometry>
+        <cylinder radius="0.01" length="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.07"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.01" length="0.2"/>
+      </geometry>
+    </collision>
+    <inertial>
+       <mass value="1"/>
+       <inertia ixx="0.019" ixy="0.0" ixz="0.0" iyy="0.019" iyz="0.0" izz="0"/>
+    </inertial>
+  </link>
+  <gazebo reference="battery_holder">
+    <material>Gazebo/Black</material>
+  </gazebo> 
+  
+  <xacro:property name="batteryweight" value="10.0" />
+  <xacro:property name="batterysize" value="0.1" />
+  <link name="battery">
+    <visual>
+      <geometry>
+        <box size="${batterysize} ${batterysize} ${0.5*batterysize}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+       <mass value="${batteryweight}"/>
+       <inertia ixx="${2.0/12.0*batteryweight*(batterysize*batterysize)}" ixy="0.0" ixz="0.0" iyy="${2.0/12.0*batteryweight*(batterysize*batterysize)}" iyz="0.0" izz="${1.25/12.0*batteryweight*(batterysize*batterysize)}"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <box size="${batterysize} ${batterysize} ${0.5*batterysize}"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="battery">
+    <material>Gazebo/Grey</material>
+  </gazebo> 
+  
+  <joint name="battery_joint" type="fixed">
+     <parent link="battery_holder"/>
+     <child link="battery"/>
+     <origin xyz="0 0 -0.175"/>
+  </joint>
+  
+  <joint name="battery_yaw" type="revolute">
+     <parent link="baseplate"/>
+     <axis xyz="1 0 0"/>
+     <child link="battery_holder"/>
+     <limit effort="1000.0" lower="${-pi/4.0}" upper="${pi/4.0}" velocity="0.5"/>
+     <origin xyz="0 0 0"/>
+    <joint_properties damping="1000.0" friction="1000.0"/>
+    <dynamics damping="100.0" friction="200.0" />
+  </joint>
+  <gazebo reference="battery_yaw">
+    <implicitSpringDamper>true</implicitSpringDamper>
+  </gazebo>
+  
+  <transmission name="battery_holder_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="$battery_holder__motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="battery_yaw">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+  <xacro:property name="leglen" value="0.07" />
+  <xacro:property name="legradius" value="0.01" />
+  <xacro:property name="vel" value="0.1" />
+  <xacro:property name="weight" value="0.01" />
+
+  <xacro:macro name="leg" params="prefix index offset side">
+    <link name="hip_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius}"/>
+        </geometry>
+      </collision>
+      <inertial>
+         <mass value="${weight}"/>
+         <inertia ixx="${1/12*weight*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="${1/12*weight*leglen*leglen}"/> 
+         </inertial>
+    </link>
+    <gazebo reference="hip_${prefix}">
+      <material>Gazebo/Grey</material>
+    </gazebo> 
+    <link name="outer_leg_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.8}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.8}"/>
+        </geometry>
+      </collision>
+      <inertial>
+         <mass value="${0.8*weight}"/>
+         <inertia ixx="${1/12*0.8*weight*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="${1/12*0.8*weight*leglen*leglen}"/> 
+         </inertial>
+    </link>
+    <gazebo reference="outer_leg_${prefix}">
+      <material>Gazebo/Grey</material>
+    </gazebo> 
+    <link name="center_leg_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.6}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.6}"/>
+        </geometry>
+      </collision>
+      <inertial>
+         <mass value="${weight*0.6}"/>
+         <inertia ixx="${1/12*weight*0.6*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="${1/12*weight*0.6*leglen*leglen}" iyz="0.0" izz="0.0"/> 
+         </inertial>
+    </link>
+    <gazebo reference="center_leg_${prefix}">
+      <material>Gazebo/Grey</material>
+    </gazebo> 
+    <link name="inner_leg_${prefix}">
+      <visual>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.4}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${leglen}" radius="${legradius*0.4}"/>
+        </geometry>
+      </collision>
+      <inertial>
+       <mass value="${weight*0.4}"/>
+       <inertia ixx="${1/12*weight*0.4*leglen*leglen}" ixy="0.0" ixz="0.0" iyy="${1/12*weight*0.4*leglen*leglen}" iyz="0.0" izz="0.0"/> 
+       </inertial>
+    </link>
+    <gazebo reference="inner_leg_${prefix}">
+      <material>Gazebo/Grey</material>
+    </gazebo> 
+
+    <joint name="base_to_hip_${prefix}" type="fixed">
+       <parent link="inner_outer_connector_${side}"/>
+       <child link="hip_${prefix}"/>
+       <origin rpy="0 ${0.2+pi+index*(pi/4.0)} 0" xyz="${0.07*sin(0.2+pi+index*(pi/4.0))} ${offset} ${0.07*cos(0.2+pi+index*(pi/4.0))}"/>
+    </joint>
+    
+    <joint name="hip_to_outer_leg_${prefix}" type="prismatic">
+       <axis xyz="0 0 1"/>
+       <parent link="hip_${prefix}"/>
+       <child link="outer_leg_${prefix}"/>
+       <limit effort="200.0" lower="0.0" upper="${leglen}" velocity="${vel}"/>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <dynamics damping="100" friction="200"/>
+    </joint>
+    <gazebo reference="hip_to_outer_leg_${prefix}">
+      <implicitSpringDamper>true</implicitSpringDamper>
+    </gazebo>
+    
+    <joint name="outer_to_center_leg_${prefix}" type="prismatic">
+       <axis xyz="0 0 1"/>
+       <parent link="outer_leg_${prefix}"/>
+       <child link="center_leg_${prefix}"/>
+       <limit effort="200.0" lower="0.0" upper="${leglen}" velocity="${vel}"/>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <dynamics damping="100" friction="200" />
+    </joint>
+    <gazebo reference="outer_to_center_leg_${prefix}">
+      <implicitSpringDamper>true</implicitSpringDamper>
+    </gazebo>
+    
+    <joint name="center_to_inner_leg_${prefix}" type="prismatic">
+       <axis xyz="0 0 1"/>
+       <parent link="center_leg_${prefix}"/>
+       <child link="inner_leg_${prefix}"/>
+       <limit effort="200.0" lower="0.0" upper="${leglen}" velocity="${vel}"/>
+       <origin xyz="0 0 0" rpy="0 0 0" />
+       <dynamics damping="100" friction="200" />
+    </joint>
+    <gazebo reference="center_to_inner_leg_${prefix}">
+      <implicitSpringDamper>true</implicitSpringDamper>
+    </gazebo>
+
+    <transmission name="outer_leg_extension_${prefix}_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="outer_leg_extension_${prefix}_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="hip_to_outer_leg_${prefix}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+    <transmission name="center_leg_extension_${prefix}_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="center_leg_extension_${prefix}_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="outer_to_center_leg_${prefix}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+    <transmission name="inner_leg_extension_${prefix}_trans" type="SimpleTransmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <actuator name="inner_leg_extension_${prefix}_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+      <joint name="center_to_inner_leg_${prefix}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+    </transmission>
+  </xacro:macro>
+  
+  <xacro:macro name="mid70" params="prefix offset_x offset_y offset_theta">
+    <link name="mid70_${prefix}">
+      <!--visual>
+        <geometry>
+          <box size=".097 .064 .0627"/>
+        </geometry>
+        <material name="white"/>
+      </visual-->
+      <visual>
+        <!-- <origin xyz="0 0 -0.0377" /> -->
+        <geometry>
+          <!-- <mesh filename="package://velodyne_description/meshes/VLP16_scan.dae" /> -->
+          <mesh filename="package://daedalus/meshes/MID-40.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+      </visual>
+      <inertial>
+       <mass value="0.58"/>
+       <inertia ixx="0.00038" ixy="0.0" ixz="0.0" iyy="0.00064" iyz="0.0" izz="0.00065"/> 
+      </inertial>
+    </link>
+
+    <joint name="baseplate_to_mid70_${prefix}" type="fixed">
+      <origin xyz="${offset_x} ${offset_y} 0.095" rpy="0 0 ${offset_theta}"/>
+      <parent link="baseplate"/>
+      <child link="mid70_${prefix}"/>
+    </joint>
+
+    <link name="anchor_${prefix}">
+      <collision>
+        <geometry>
+          <box size=".001 .064 .0627"/>
+        </geometry>
+      </collision>
+      <inertial>
+       <mass value="0.01"/>
+       <inertia ixx="0.00038" ixy="0.0" ixz="0.0" iyy="0.00064" iyz="0.0" izz="0.00065"/>
+      </inertial>
+    </link>
+
+    <joint name="anchor_joint_${prefix}" type="continuous">
+      <axis xyz="1 0 0"/>
+      <origin xyz="-0.0175 0 0" rpy="0 0 0"/>
+      <parent link="mid70_${prefix}"/>
+      <child link="anchor_${prefix}"/>
+      <limit effort="2000.0" velocity="6.28"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <dynamics damping="10.0" friction="20.0"/>
+    </joint>
+
+  <transmission name="anchor_joint_${prefix}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="anchor_joint_${prefix}">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="anchor_joint_${prefix}">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+  <!-- <joint name="anchor_joint_${prefix}" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.0323 0 0" rpy="0 0 0"/>
+      <parent link="mid70_${prefix}"/>
+      <child link="anchor_${prefix}"/>
+    </joint> -->
+
+  <!--gazebo reference="anchor_joint_${prefix}">
+    <implicitSpringDamper>true</implicitSpringDamper>
+  </gazebo-->
+
+    <gazebo reference="anchor_${prefix}">
+      <material>Gazebo/Grey</material>
+      <sensor type="gpu_ray" name="hokuyo">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>60</update_rate>
+        <ray>
+            <scan>
+                <horizontal>
+                    <samples>90</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-0.614356</min_angle>
+                    <max_angle>0.614356</max_angle>
+                </horizontal>
+                <!-- <vertical>
+                    <samples>30</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-0.614356</min_angle>
+                    <max_angle>0.614356</max_angle>
+                </vertical> -->
+            </scan>
+            <range>
+                <min>0.05</min>
+                <max>90.0</max>
+                <resolution>0.01</resolution>
+            </range>
+            <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.01</stddev>
+            </noise>
+        </ray>
+        <plugin name="gazebo_laser" filename="libgazebo_ros_gpu_laser.so">
+            <topicName>/daedalus/laser/scan_${prefix}</topicName>
+            <frameName>anchor_${prefix}</frameName>
+        </plugin>
+      </sensor>
+      <!--sensor name="block_lidar" type="gpu_ray">
+        <visualize>true</visualize>
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <ray>
+            <scan>
+                <horizontal>
+                    <samples>30</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-0.614356</min_angle>
+                    <max_angle>0.614356</max_angle>
+                </horizontal>
+                <vertical>
+                    <samples>30</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-0.614356</min_angle>
+                    <max_angle>0.614356</max_angle>
+                </vertical>
+            </scan>
+            <range>
+                <min>0.05</min>
+                <max>90.0</max>
+            </range>
+        </ray>
+        <plugin name="lidar_plugin" filename="libgazebo_ros_gpu_block_laser.so">
+            <gaussianNoise>0.00</gaussianNoise>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>20</updateRate>
+            <topicName>/daedalus/laser_scan_${prefix}</topicName>
+            <frameName>anchor_${prefix}</frameName>
+        </plugin>
+        <always_on>true</always_on>
+        <update_rate>10.0</update_rate>
+      </sensor>
+    </gazebo-->
+    <!-- <sensor type="ray" name="MID-40_${prefix}">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>20</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>-${43*M_PI/180.0}</min_angle>
+              <max_angle> ${43*M_PI/180.0}</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>-${43*M_PI/180.0}</min_angle>
+              <max_angle> ${43*M_PI/180.0}</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.3</min>
+            <max>130</max>
+            <resolution>0.001</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.0</stddev>
+          </noise>
+        </ray> -->
+          <!--plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_livox_gpu_laser.so">
+            <topicName>/daedalus/laser_scan_${prefix}</topicName>
+            <frameName>anchor_${prefix}</frameName>
+            <<min_range>0.2</min_range>
+            <max_range>100</max_range>
+            <num_samples>10</num_samples>
+            <num_ellipses>4</num_ellipses>
+            <rotation_step>0.33</rotation_step>
+            <update_rate>20</update_rate>>
+          </plugin-->
+          <!-- <plugin name="gazebo_ros_laser_controller_${prefix}" filename="libgazebo_ros_livox_laser.so">
+            <topicName>/daedalus/laser_scan_${prefix}</topicName>
+            <frameName>anchor_${prefix}</frameName>
+            <min_range>0.3</min_range>
+            <max_range>130</max_range>
+            <num_samples>10</num_samples>
+            <num_ellipses>4</num_ellipses>
+            <rotation_step>0.33</rotation_step>
+            <update_rate>20</update_rate>
+          </plugin>
+      </sensor> -->
+    </gazebo>
+  </xacro:macro> 
+
+  <xacro:macro name="imu" params="prefix r p y">
+    <link name="imu_link_${prefix}">
+      <visual>
+        <geometry>
+          <box size=".01 .01 .01"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <material name="blue"/>
+      </visual>
+    </link>
+
+    <joint name="imu_joint_${prefix}" type="fixed">
+      <parent link="baseplate"/>
+      <child link="imu_link_${prefix}"/>
+      <origin rpy="${r} ${p} ${y}" xyz="0 0 .05"/>
+    </joint>
+
+    <gazebo reference="imu_link_${prefix}">
+      <gravity>true</gravity>
+      <sensor name="imu_sensor_${prefix}" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <visualize>true</visualize>
+        <topic>/daedalus/imu_${prefix}</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <topicName>/daedalus/imu_${prefix}</topicName>
+          <bodyName>imu_link_${prefix}</bodyName>
+          <updateRateHZ>100</updateRateHZ>
+          <gaussianNoise>2e-4</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>imu_link_${prefix}</frameName>
+          <initialOrientationAsReference>true</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>
+      <material>Gazebo/Green</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="encoder" params="prefix offset_x offset_y offset_theta">
+    <link name="drive_encoder_${prefix}">
+      <visual>
+        <geometry>
+          <box size="0.005 0.01 0.005"/>
+          <material name="white"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+    </link>
+
+    <joint name="encoder_joint_${prefix}" type="fixed">
+      <parent link="baseplate"/>
+      <child link="drive_encoder_${prefix}"/>
+      <origin rpy="0 0 ${offset_theta}" xyz="${offset_x} ${offset_y} -0.055"/>
+    </joint>
+
+    <gazebo reference="drive_encoder_${prefix}">
+      <sensor type="gpu_ray" name="hokuyo_encoder">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>60</update_rate>
+        <ray>
+            <scan>
+                <horizontal>
+                    <samples>3</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-0.05</min_angle>
+                    <max_angle>0.05</max_angle>
+                </horizontal>
+            </scan>
+            <range>
+                <min>0.01</min>
+                <max>90.0</max>
+                <resolution>0.01</resolution>
+            </range>
+            <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+            </noise>
+        </ray>
+        <plugin name="gazebo_line_laser" filename="libgazebo_ros_gpu_laser.so">
+            <topicName>/daedalus/drive_encoder_${prefix}</topicName>
+            <frameName>drive_encoder_${prefix}</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+   
+  <xacro:leg prefix="right_0" index="0" offset="0" side="right"/>
+  <xacro:leg prefix="right_2" index="2" offset="0" side="right"/>
+  <xacro:leg prefix="right_4" index="4" offset="0" side="right"/>
+  <xacro:leg prefix="right_6" index="6" offset="0" side="right"/>
+  <xacro:leg prefix="right_1" index="1" offset="0" side="right"/>
+  <xacro:leg prefix="right_3" index="3" offset="0" side="right"/>
+  <xacro:leg prefix="right_5" index="5" offset="0" side="right"/>
+  <xacro:leg prefix="right_7" index="7" offset="0" side="right"/>
+  <!--
+  -->
+  <xacro:leg prefix="left_0" index="0" offset="-0" side="left"/>
+  <xacro:leg prefix="left_2" index="2" offset="-0" side="left"/>
+  <xacro:leg prefix="left_4" index="4" offset="-0" side="left"/>
+  <xacro:leg prefix="left_6" index="6" offset="-0" side="left"/>
+  <xacro:leg prefix="left_1" index="1" offset="-0" side="left"/>
+  <xacro:leg prefix="left_3" index="3" offset="-0" side="left"/>
+  <xacro:leg prefix="left_5" index="5" offset="-0" side="left"/>
+  <xacro:leg prefix="left_7" index="7" offset="-0" side="left"/>
+  <!--
+  -->
+
+  <xacro:mid70 prefix="0" offset_x="0.1" offset_y="-0.1" offset_theta="-0.436332"/>
+  <xacro:mid70 prefix="1" offset_x="0.1" offset_y="0.1" offset_theta="+0.436332"/>
+  <xacro:mid70 prefix="2" offset_x="-0.1" offset_y="0.1" offset_theta="${pi-0.436332}"/>
+  <xacro:mid70 prefix="3" offset_x="-0.1" offset_y="-0.1" offset_theta="${pi+0.436332}"/>
+
+  <xacro:imu prefix="0" r="0" p="0" y="0"/>
+  <xacro:imu prefix="1" r="0" p="0" y="${pi/2}"/>
+  <xacro:imu prefix="2" r="0" p="${pi/2}" y="0"/>
+
+  <xacro:encoder prefix="r" offset_x="0" offset_y="0.15" offset_theta="${pi/2}"/>
+  <xacro:encoder prefix="l" offset_x="0" offset_y="-0.15" offset_theta="${-pi/2}"/>
+
+  <gazebo>
+     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+       <robotNamespace>/</robotNamespace>
+     </plugin>
+  </gazebo>
+</robot>

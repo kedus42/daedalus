@@ -4,7 +4,7 @@
 
 #define TICK_THRESHOLD 0.1
 #define UPDATE_RATE 10.0
-#define DIST_TO_RODS 0.1
+#define DIST_TO_RODS 0.08
 
 class Encoder{
     protected:

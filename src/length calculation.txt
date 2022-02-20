@@ -1,0 +1,7 @@
+float dms = sin(acos(rs_/rm_)) * rm_;
+float dmtx = sf*cos(sphere_roll_) * dms - cos(theta) * rs_ * sin(sphere_roll_);
+float dmty = -sin(theta)*rs_;
+float dmtz = rm_ - sf *sin(sphere_roll_) * dms - cos(theta)*rs_*cos(sphere_roll_);
+
+extensions_.data[i] = (((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)*sqrt(pow(dmtx, 2) + pow(dmty, 2) + pow(dmtz, 2))*(rs_+lm_))/
+                    (tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;

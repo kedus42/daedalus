@@ -29,9 +29,9 @@
       i: 0.01 
       d: 10.0
     temp_cyl:
-      p: 100.0
+      p: 1.0
       i: 0.01 
-      d: 10.0
+      d: 1.0
     outer_to_center_leg_right_0:
       p: 10000
       i: 0.01 

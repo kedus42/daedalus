@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   actionlib_msgs
   actionlib
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,11 +54,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+ add_message_files(
+   FILES
+   Extension.msg
+   VPIP.msg
 #   Message2.msg
-# )
+ )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -151,6 +153,8 @@ add_executable(spin_corrector src/spin_corrector.cpp)
 add_executable(encoder_based_position_estimator utils/encoder_based_position_estimator.cpp)
 add_executable(mapper src/mapper.cpp)
 add_executable(concat_map utils/concat_map.cpp)
+add_executable(extension_allocator src/extension_allocator.cpp)
+add_executable(rod_driver src/rod_driver.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -172,6 +176,8 @@ add_dependencies(spin_corrector ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXP
 add_dependencies(encoder_based_position_estimator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(mapper ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(concat_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(extension_allocator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(rod_driver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(course_controller
@@ -220,6 +226,14 @@ ${catkin_LIBRARIES}
 )
 
 target_link_libraries(concat_map
+${catkin_LIBRARIES}
+)
+
+target_link_libraries(extension_allocator
+${catkin_LIBRARIES}
+)
+
+target_link_libraries(rod_driver
 ${catkin_LIBRARIES}
 )
 #############
