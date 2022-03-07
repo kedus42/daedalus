@@ -19,7 +19,7 @@ class Allocator{
         void extension_callback_(const daedalus::ExtensionConstPtr &extension_cmd){
             if(extension_cmd->side == 0 ){
                 int i =0;
-                int compensated_pos = extension_cmd->index; //- left_drive_pos_;
+                int compensated_pos = extension_cmd->index- left_drive_pos_;
                 if (compensated_pos < 0)
                     compensated_pos += 7;
                 while(i<3){
@@ -29,7 +29,7 @@ class Allocator{
                 left_pub_.publish(left_array_);
             } else{
                 int i = 0;
-                int compensated_pos = extension_cmd->index; //- right_drive_pos_;
+                int compensated_pos = extension_cmd->index- right_drive_pos_;
                 if (compensated_pos < 0)
                     compensated_pos += 7;
                 while(i<3){

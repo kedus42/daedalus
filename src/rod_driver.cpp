@@ -38,33 +38,37 @@ class Driver{
                     extensions_.data[i] = 0;
                     i++;
                 }
-                extensions_.data[5] = .28;
-                extensions_.data[4] = .28;
-                extensions_.data[13] = .28;
-                extensions_.data[12] = .28;
+                extensions_.data[0] = .28;
+                extensions_.data[1] = .28;
+                extensions_.data[8] = .28;
+                extensions_.data[9] = .28;
             } else if(cmd->data == "backward"){
                 while (i<16){
                     extensions_.data[i] = 0;
                     i++;
                 }
-                extensions_.data[3] = .28;
-                extensions_.data[4] = .28;
-                extensions_.data[11] = .28;
-                extensions_.data[12] = .28;
+                extensions_.data[0] = .28;
+                extensions_.data[1] = .28;
+                extensions_.data[8] = .28;
+                extensions_.data[9] = .28;
             } else if(cmd->data == "right"){
                 while (i<16){
                     extensions_.data[i] = 0;
                     i++;
                 }
-                extensions_.data[5] = .28;
-                extensions_.data[4] = .28;
+                extensions_.data[7] = .28;
+                extensions_.data[0] = .28;
+                extensions_.data[8] = .07;
+                extensions_.data[15] = .07;
             } else if(cmd->data == "left"){
                 while (i<16){
                     extensions_.data[i] = 0;
                     i++;
                 }
-                extensions_.data[13] = .28;
-                extensions_.data[12] = .28;
+                extensions_.data[8] = .28;
+                extensions_.data[9] = .28;
+                extensions_.data[0] = .07;
+                extensions_.data[1] = .07;
             }
         }
         void vpip_callback_(const daedalus::VPIPConstPtr &vpip){
@@ -108,6 +112,9 @@ class Driver{
             while(i<8){
                 float theta = -1*drive_pos+0.2+((8-i)*M_PI/4);
                 //float theta = -drive_pos + 0.2 + (8-i)*M_PI/4;
+                int j = i-1;
+                if (j==-1)
+                    j=7;
 
                 float dms = sin(acos(rs_/rm_)) * rm_;
                 float dmtx = - cos(theta) * sin(sphere_roll_);
@@ -117,20 +124,23 @@ class Driver{
                 float first_term = -tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms;
                 float second_term = tan(roll)*dmtx+tan(pitch)*dmty+dmtz;
 
-                extensions_.data[i] =  ((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)/(tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;
+                extensions_.data[j] =  ((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)/(tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;
                 //extensions_.data[i] = extensions_.data[i] * -1 + rm_;
 
                 ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
                 ROS_INFO("extesnion: %f", extensions_.data[i]);
                 ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));
-                if (extensions_.data[i]>lm_ || extensions_.data[i] < 0)
-                    extensions_.data[i] = 0;
+                if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
+                    extensions_.data[j] = 0;
                 i++;
             }
             while(i<16){
                 sf = -1;
                 float theta = -1*drive_pos+0.2+((16-i)*M_PI/4);
                 //float theta = -drive_pos + 0.2 + (16-i)*M_PI/4;
+                int j = i-1;
+                if (j==7)
+                    j=16;
 
                 float dms = sin(acos(rs_/rm_)) * rm_;
                 float dmtx = - cos(theta) * sin(sphere_roll_);
@@ -140,14 +150,14 @@ class Driver{
                 float first_term = -tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms;
                 float second_term = tan(roll)*dmtx+tan(pitch)*dmty+dmtz;
 
-                extensions_.data[i] = ((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)/(tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;
+                extensions_.data[j] = ((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)/(tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;
                 //extensions_.data[i] = extensions_.data[i] * -1 + rm_;
 
                 ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
                 ROS_INFO("extesnion: %f", extensions_.data[i]);
                 ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));
-                if (extensions_.data[i]>lm_ || extensions_.data[i] < 0)
-                    extensions_.data[i] = 0;
+                if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
+                    extensions_.data[j] = 0;
                 i++;
             }
         }
