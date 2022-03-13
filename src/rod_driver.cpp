@@ -6,6 +6,7 @@
 #include "std_msgs/String.h"
 #include "daedalus/Extension.h"
 #include "daedalus/VPIP.h"
+#include "daedalus/ExtRegion.h"
 #include "geometry_msgs/Vector3.h"
 #include "sensor_msgs/JointState.h"
 #include "math.h"
@@ -19,6 +20,7 @@ class Driver{
         ros::Subscriber vpip_sub_;
         ros::Subscriber euler_sub_;
         ros::Subscriber joint_sub_;
+        ros::Subscriber region_sub_;
         ros::Publisher ext_pub_;
         ros::Timer execution_timer_;
         ros::Timer vpip_timer_;
@@ -31,6 +33,7 @@ class Driver{
         float rm_;
         float lm_;
         float drive_pos_;
+        float PIl4;
         void cmd_callback_(const std_msgs::StringConstPtr &cmd){
             int i =0;
             if (cmd->data == "forward"){
@@ -56,10 +59,10 @@ class Driver{
                     extensions_.data[i] = 0;
                     i++;
                 }
-                extensions_.data[7] = .28;
+                extensions_.data[1] = .28;
                 extensions_.data[0] = .28;
                 extensions_.data[8] = .07;
-                extensions_.data[15] = .07;
+                extensions_.data[9] = .07;
             } else if(cmd->data == "left"){
                 while (i<16){
                     extensions_.data[i] = 0;
@@ -75,6 +78,32 @@ class Driver{
             roll = vpip->roll*M_PI /180;
             pitch = vpip->pitch*M_PI /180;
             
+        }
+        void region_callback_(const daedalus::ExtRegionConstPtr &region){
+            int i = 0;
+            while (i<16){
+                extensions_.data[i] = 0;
+                i++;
+            }
+            i = std::floor((region->alpha*M_PI/180)/(M_PI/4));
+            int j = std::ceil((region->beta*M_PI/180)/(M_PI/4));
+            if (i < j){
+                while (i <= j && i<8){
+                    extensions_.data[i] = 0.28;
+                    extensions_.data[i+8] = 0.28;
+                    i++;
+                }
+            } else {
+                while (i!=j){
+                    extensions_.data[i] = 0.28;
+                    extensions_.data[i+8] = 0.28;
+                    i++;
+                    if(i==8)
+                        i = 0;
+                }
+                extensions_.data[j] = 0.28;
+                extensions_.data[j + 8] = 0.28;
+            }
         }
         void euler_callback_(const geometry_msgs::Vector3ConstPtr &rpy){
             sphere_roll_ = rpy->x;
@@ -110,8 +139,8 @@ class Driver{
             if(roll == 0 && pitch == 0)
                 return;
             while(i<8){
-                float theta = -1*drive_pos+0.2+((8-i)*M_PI/4);
-                //float theta = -drive_pos + 0.2 + (8-i)*M_PI/4;
+                float theta = -1*drive_pos+0.2+((8-i)*PIl4);
+                //float theta = -drive_pos + 0.2 + (8-i)*PIl4;
                 int j = i-1;
                 if (j==-1)
                     j=7;
@@ -127,20 +156,20 @@ class Driver{
                 extensions_.data[j] =  ((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)/(tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;
                 //extensions_.data[i] = extensions_.data[i] * -1 + rm_;
 
-                ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
+                /*ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
                 ROS_INFO("extesnion: %f", extensions_.data[i]);
-                ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));
+                ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));*/
                 if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
                     extensions_.data[j] = 0;
                 i++;
             }
             while(i<16){
                 sf = -1;
-                float theta = -1*drive_pos+0.2+((16-i)*M_PI/4);
-                //float theta = -drive_pos + 0.2 + (16-i)*M_PI/4;
+                float theta = -1*drive_pos+0.2+((16-i)*PIl4);
+                //float theta = -drive_pos + 0.2 + (16-i)*PIl4;
                 int j = i-1;
                 if (j==7)
-                    j=16;
+                    j=15;
 
                 float dms = sin(acos(rs_/rm_)) * rm_;
                 float dmtx = - cos(theta) * sin(sphere_roll_);
@@ -153,9 +182,9 @@ class Driver{
                 extensions_.data[j] = ((-tan(roll)*sf*cos(sphere_roll_)*dms-rm_+sf*sin(sphere_roll_)*dms)/(tan(roll)*dmtx+tan(pitch)*dmty+dmtz))-rs_;
                 //extensions_.data[i] = extensions_.data[i] * -1 + rm_;
 
-                ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
+                /*ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
                 ROS_INFO("extesnion: %f", extensions_.data[i]);
-                ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));
+                ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));*/
                 if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
                     extensions_.data[j] = 0;
                 i++;
@@ -165,6 +194,7 @@ class Driver{
         Driver(){
             cmd_sub_ = nh_.subscribe<std_msgs::String>("daedalus/rod_drive_cmd", 1, &Driver::cmd_callback_, this);
             vpip_sub_ = nh_.subscribe<daedalus::VPIP>("daedalus/vpip_description", 1, &Driver::vpip_callback_, this);
+            region_sub_ = nh_.subscribe<daedalus::ExtRegion>("daedalus/region_description", 1, &Driver::region_callback_, this);
             euler_sub_ = nh_.subscribe<geometry_msgs::Vector3>("daedalus/euler_orientation", 3, &Driver::euler_callback_, this);
             joint_sub_ = nh_.subscribe<sensor_msgs::JointState>("/joint_states", 3, &Driver::joint_callback_, this);
             ext_pub_ = nh_.advertise<daedalus::Extension>("/daedalus/extend_rod", 16);
@@ -175,6 +205,7 @@ class Driver{
             rm_=0.232;
             rs_=0.07;
             lm_=0.28;
+            PIl4 = M_PI/4;
             int i =0;
             while (i<16){
                 extensions_.data.push_back(0);

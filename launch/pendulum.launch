@@ -6,7 +6,7 @@
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
-  <arg name="model" default="$(find daedalus)/urdf/daedalus_rod.urdf.xacro"/>
+  <arg name="model" default="$(find daedalus)/urdf/daedalus_mixed.urdf.xacro"/>
   <arg name="lidar_rev_speed" default="3.14"/>
   <arg name="world" default="empty_world"/>
 
@@ -40,7 +40,7 @@
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
 
-  <!--node name="basic_gui" pkg="daedalus" type="gui.py" output="screen"/-->
+  <node name="basic_gui" pkg="daedalus" type="gui_mixed.py" output="screen"/>
   <!-- <node name="course_controller" pkg="daedalus" type="course_controller" output="screen"/> -->
   <node name="imu_euler" pkg="daedalus" type="imu_euler" output="screen"/>
   <!--node name="roll_controller" pkg="daedalus" type="roll_controller" output="screen"/-->
@@ -51,13 +51,13 @@
     <param name="fixed_frame" type="string" value="base_link" />
   </node-->
   <node pkg="rostopic" type="rostopic" name="rostopic" args="pub -r 1 /daedalus_lidar_controller/command std_msgs/Float64MultiArray '{data:[$(arg lidar_rev_speed), $(arg lidar_rev_speed), $(arg lidar_rev_speed), $(arg lidar_rev_speed)]}'"/>
-  <node name="drive_encoder" pkg="daedalus" type="drive_encoder" output="screen"/>
+  <!--node name="drive_encoder" pkg="daedalus" type="drive_encoder" output="screen"/-->
   <!--node name="pitch_corrector" pkg="daedalus" type="pitch_corrector" output="screen"/-->
   <!--node name="pcl_generator" pkg="daedalus" type="pcl_generator" output="screen"/-->
-  <node name="encoder_based_position_estimator" pkg="daedalus" type="encoder_based_position_estimator" output="screen"/>
+  <!--node name="encoder_based_position_estimator" pkg="daedalus" type="encoder_based_position_estimator" output="screen"/-->
   <!--node name="mapper" pkg="daedalus" type="mapper" output="screen"/-->
-  <node name="allocator" pkg="daedalus" type="extension_allocator" output="screen"/>
-  <node name="driver" pkg="daedalus" type="rod_driver" output="screen"/>
+  <!--node name="allocator" pkg="daedalus" type="extension_allocator" output="screen" respawn="true"/>
+  <node name="driver" pkg="daedalus" type="rod_driver" output="screen"/-->
   <!--node name="ukf_localization_node" pkg="robot_localization" type="ukf_localization_node" output="screen">
     
     <param name="imu0" value="/daedalus/imu_0"/>

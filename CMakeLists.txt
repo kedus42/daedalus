@@ -58,6 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
    Extension.msg
    VPIP.msg
+   ExtRegion.msg
 #   Message2.msg
  )
 
@@ -125,12 +126,12 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} /usr/include/asa058
+ include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} asa058
 )
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
- /usr/include/asa058/asa058.cpp
+ asa058/asa058.cpp
  )
 
 ## Add cmake target dependencies of the library
@@ -154,6 +155,7 @@ add_executable(encoder_based_position_estimator utils/encoder_based_position_est
 add_executable(mapper src/mapper.cpp)
 add_executable(concat_map utils/concat_map.cpp)
 add_executable(extension_allocator src/extension_allocator.cpp)
+add_executable(vpip_extension_allocator src/vpip_extension_allocator.cpp)
 add_executable(rod_driver src/rod_driver.cpp)
 
 ## Rename C++ executable without prefix
@@ -177,6 +179,7 @@ add_dependencies(encoder_based_position_estimator ${${PROJECT_NAME}_EXPORTED_TAR
 add_dependencies(mapper ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(concat_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(extension_allocator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(vpip_extension_allocator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(rod_driver ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
@@ -198,7 +201,7 @@ ${catkin_LIBRARIES}
 
 target_link_libraries(path_finder
 ${catkin_LIBRARIES}
-/usr/include/asa058/asa058.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/asa058/asa058.cpp
 )
 
 target_link_libraries(roll_controller
@@ -234,6 +237,10 @@ ${catkin_LIBRARIES}
 )
 
 target_link_libraries(rod_driver
+${catkin_LIBRARIES}
+)
+
+target_link_libraries(vpip_extension_allocator
 ${catkin_LIBRARIES}
 )
 #############
