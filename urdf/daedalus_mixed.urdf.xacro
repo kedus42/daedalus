@@ -2,7 +2,6 @@
 <robot name="daedalus" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <self_collide>false</self_collide>
-  <!--Define some parameters -->
   <material name="white">
      <color rgba="1 1 1 0.2"/>
   </material>
@@ -20,7 +19,6 @@
   </xacro:macro>
 
 
-  <!--The sphere -->
   <link name="base_link"/>
   
   <xacro:property name="sphereweight" value="3" />
@@ -95,27 +93,6 @@
      <origin xyz="0 0.2 0"/>
   </joint>
 
-  <!--link name="star_fixer_link"/>
-
-  <joint name="star_fixer_joint" type="fixed">
-     <parent link="star_fixer_link"/>
-     <child link="sphere"/>
-     <origin xyz="0 0 0"/>
-  </joint-->
-
-  <!--joint name="temp_cyl_1" type="continuous">
-     <parent link="filler_link"/>
-     <child link="inner_outer_connector_right"/>
-     <axis xyz="0 1 0" rpy="0 0 0"/>
-     <origin xyz="0 0.2 0"/>
-     <limit effort="0.1" velocity="0.1"/>
-     <joint_properties damping="1.0" friction="1.0"/>
-     <dynamics damping="1.0" friction="2.0"/>
-  </joint-->
-  <!--gazebo reference="temp_cyl_1">
-    <implicitSpringDamper>true</implicitSpringDamper>
-  </gazebo-->
-
   <joint name="temp_cyl_2" type="continuous">
      <parent link="filler_link"/>
      <child link="inner_outer_connector_left"/>
@@ -125,9 +102,6 @@
      <joint_properties damping="1000.0" friction="1000.0"/>
      <dynamics damping="100.0" friction="200.0"/>
   </joint>
-  <!--gazebo reference="temp_cyl_2">
-    <implicitSpringDamper>true</implicitSpringDamper>
-  </gazebo-->
 
   <joint name="filler" type="fixed">
      <parent link="base_link"/>
@@ -140,16 +114,6 @@
      <child link="baseplate"/>
      <origin xyz="0 0 0"/>
   </joint>
-
-  <!--transmission name="temp_cyl_1">
-    <type>transmission_interface/SimpleTransmission</type>
-    <actuator name="$temp_cyl_1">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-    <joint name="temp_cyl_1">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-    </joint>
-  </transmission-->
 
   <transmission name="temp_cyl_2">
     <type>transmission_interface/SimpleTransmission</type>
@@ -447,16 +411,8 @@
   
   <xacro:macro name="mid70" params="prefix offset_x offset_y offset_theta">
     <link name="mid70_${prefix}">
-      <!--visual>
-        <geometry>
-          <box size=".097 .064 .0627"/>
-        </geometry>
-        <material name="white"/>
-      </visual-->
       <visual>
-        <!-- <origin xyz="0 0 -0.0377" /> -->
         <geometry>
-          <!-- <mesh filename="package://velodyne_description/meshes/VLP16_scan.dae" /> -->
           <mesh filename="package://daedalus/meshes/MID-40.stl" scale="0.001 0.001 0.001" />
         </geometry>
       </visual>
@@ -503,16 +459,6 @@
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
   </transmission>
-  <!-- <joint name="anchor_joint_${prefix}" type="fixed">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <origin xyz="0.0323 0 0" rpy="0 0 0"/>
-      <parent link="mid70_${prefix}"/>
-      <child link="anchor_${prefix}"/>
-    </joint> -->
-
-  <!--gazebo reference="anchor_joint_${prefix}">
-    <implicitSpringDamper>true</implicitSpringDamper>
-  </gazebo-->
 
     <gazebo reference="anchor_${prefix}">
       <material>Gazebo/Grey</material>
@@ -528,12 +474,6 @@
                     <min_angle>-0.614356</min_angle>
                     <max_angle>0.614356</max_angle>
                 </horizontal>
-                <!-- <vertical>
-                    <samples>30</samples>
-                    <resolution>1</resolution>
-                    <min_angle>-0.614356</min_angle>
-                    <max_angle>0.614356</max_angle>
-                </vertical> -->
             </scan>
             <range>
                 <min>0.05</min>
@@ -551,91 +491,6 @@
             <frameName>anchor_${prefix}</frameName>
         </plugin>
       </sensor>
-      <!--sensor name="block_lidar" type="gpu_ray">
-        <visualize>true</visualize>
-        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
-        <ray>
-            <scan>
-                <horizontal>
-                    <samples>30</samples>
-                    <resolution>1</resolution>
-                    <min_angle>-0.614356</min_angle>
-                    <max_angle>0.614356</max_angle>
-                </horizontal>
-                <vertical>
-                    <samples>30</samples>
-                    <resolution>1</resolution>
-                    <min_angle>-0.614356</min_angle>
-                    <max_angle>0.614356</max_angle>
-                </vertical>
-            </scan>
-            <range>
-                <min>0.05</min>
-                <max>90.0</max>
-            </range>
-        </ray>
-        <plugin name="lidar_plugin" filename="libgazebo_ros_gpu_block_laser.so">
-            <gaussianNoise>0.00</gaussianNoise>
-            <alwaysOn>true</alwaysOn>
-            <updateRate>20</updateRate>
-            <topicName>/daedalus/laser_scan_${prefix}</topicName>
-            <frameName>anchor_${prefix}</frameName>
-        </plugin>
-        <always_on>true</always_on>
-        <update_rate>10.0</update_rate>
-      </sensor>
-    </gazebo-->
-    <!-- <sensor type="ray" name="MID-40_${prefix}">
-        <pose>0 0 0 0 0 0</pose>
-        <visualize>false</visualize>
-        <update_rate>20</update_rate>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>1</samples>
-              <resolution>1</resolution>
-              <min_angle>-${43*M_PI/180.0}</min_angle>
-              <max_angle> ${43*M_PI/180.0}</max_angle>
-            </horizontal>
-            <vertical>
-              <samples>1</samples>
-              <resolution>1</resolution>
-              <min_angle>-${43*M_PI/180.0}</min_angle>
-              <max_angle> ${43*M_PI/180.0}</max_angle>
-            </vertical>
-          </scan>
-          <range>
-            <min>0.3</min>
-            <max>130</max>
-            <resolution>0.001</resolution>
-          </range>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.0</stddev>
-          </noise>
-        </ray> -->
-          <!--plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_livox_gpu_laser.so">
-            <topicName>/daedalus/laser_scan_${prefix}</topicName>
-            <frameName>anchor_${prefix}</frameName>
-            <<min_range>0.2</min_range>
-            <max_range>100</max_range>
-            <num_samples>10</num_samples>
-            <num_ellipses>4</num_ellipses>
-            <rotation_step>0.33</rotation_step>
-            <update_rate>20</update_rate>>
-          </plugin-->
-          <!-- <plugin name="gazebo_ros_laser_controller_${prefix}" filename="libgazebo_ros_livox_laser.so">
-            <topicName>/daedalus/laser_scan_${prefix}</topicName>
-            <frameName>anchor_${prefix}</frameName>
-            <min_range>0.3</min_range>
-            <max_range>130</max_range>
-            <num_samples>10</num_samples>
-            <num_ellipses>4</num_ellipses>
-            <rotation_step>0.33</rotation_step>
-            <update_rate>20</update_rate>
-          </plugin>
-      </sensor> -->
     </gazebo>
   </xacro:macro> 
 
@@ -737,8 +592,8 @@
   <xacro:leg prefix="right_3" index="3" offset="0" side="right"/>
   <xacro:leg prefix="right_5" index="5" offset="0" side="right"/>
   <xacro:leg prefix="right_7" index="7" offset="0" side="right"/>
-  <!--
-  -->
+  
+  
   <xacro:leg prefix="left_0" index="0" offset="-0" side="left"/>
   <xacro:leg prefix="left_2" index="2" offset="-0" side="left"/>
   <xacro:leg prefix="left_4" index="4" offset="-0" side="left"/>
@@ -747,8 +602,7 @@
   <xacro:leg prefix="left_3" index="3" offset="-0" side="left"/>
   <xacro:leg prefix="left_5" index="5" offset="-0" side="left"/>
   <xacro:leg prefix="left_7" index="7" offset="-0" side="left"/>
-  <!--
-  -->
+  
 
   <xacro:mid70 prefix="0" offset_x="0.1" offset_y="-0.1" offset_theta="-0.436332"/>
   <xacro:mid70 prefix="1" offset_x="0.1" offset_y="0.1" offset_theta="+0.436332"/>
