@@ -65,10 +65,6 @@ class Allocator{
             }
             PIl4 = M_PI/4;
         }
-        ~Allocator(){
-            delete &left_array_;
-            delete &right_array_;
-        }
 };
 
 

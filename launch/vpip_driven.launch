@@ -41,6 +41,7 @@
   <node pkg="rostopic" type="rostopic" name="rostopic" args="pub -r 1 /daedalus_lidar_controller/command std_msgs/Float64MultiArray '{data:[$(arg lidar_rev_speed), $(arg lidar_rev_speed), $(arg lidar_rev_speed), $(arg lidar_rev_speed)]}'"/>
   <node name="drive_encoder" pkg="daedalus" type="drive_encoder" output="screen"/>
   <node name="encoder_based_position_estimator" pkg="daedalus" type="encoder_based_position_estimator" output="screen"/>
+  <node name="allocator" pkg="daedalus" type="vpip_extension_allocator" output="screen" respawn="true"/>
   <node name="driver" pkg="daedalus" type="rod_driver" output="screen"/>
  
   <arg name="rvizconfig" default="$(find daedalus)/rviz/tuning.rviz" />

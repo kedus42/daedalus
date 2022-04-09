@@ -159,8 +159,8 @@ class Driver{
                 /*ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
                 ROS_INFO("extesnion: %f", extensions_.data[i]);
                 ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));*/
-                if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
-                    extensions_.data[j] = 0;
+                //if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
+                //    extensions_.data[j] = 0;
                 i++;
             }
             while(i<16){
@@ -185,8 +185,8 @@ class Driver{
                 /*ROS_INFO("flat ground: %f ", rm_/cos(theta)-rs_);
                 ROS_INFO("extesnion: %f", extensions_.data[i]);
                 ROS_INFO("theta: %f", fmod(theta*180/M_PI,360));*/
-                if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
-                    extensions_.data[j] = 0;
+                //if (extensions_.data[j]>lm_ || extensions_.data[j] < 0)
+                //    extensions_.data[j] = 0;
                 i++;
             }
         }
@@ -198,7 +198,7 @@ class Driver{
             euler_sub_ = nh_.subscribe<geometry_msgs::Vector3>("daedalus/euler_orientation", 3, &Driver::euler_callback_, this);
             joint_sub_ = nh_.subscribe<sensor_msgs::JointState>("/joint_states", 3, &Driver::joint_callback_, this);
             ext_pub_ = nh_.advertise<daedalus::Extension>("/daedalus/extend_rod", 16);
-            execution_timer_ = nh_.createTimer(ros::Duration(0.5), &Driver::timer_callback_, this);
+            execution_timer_ = nh_.createTimer(ros::Duration(0.02), &Driver::timer_callback_, this);
             vpip_timer_ = nh_.createTimer(ros::Duration(0.01), &Driver::vpip_timer_callback_, this);
             roll=0;
             pitch=0;
