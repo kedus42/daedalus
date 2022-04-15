@@ -31,6 +31,8 @@
         args="-x 0 -y 60 -Y 3.14 -z 1 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'cave_world')"/>
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
         args="-x 0 -y 0 -Y 0 -z 1 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'ramp')"/>
+   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-x 0 -y 0 -Y 0 -z 0.7 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" if="$(eval arg('world') == 'env')"/>
 
   <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
